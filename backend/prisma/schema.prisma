@@ -14,9 +14,39 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  name     String
-  email    String @unique
-  password String
-  createdAt DateTime @default(now())
+  id        Int       @id @default(autoincrement())
+  name      String
+  email     String    @unique
+  password  String
+  role      String    @default("user")
+  createdAt DateTime  @default(now())
+
+  comments  Comment[]
+}
+
+model Video {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  url         String
+  categoryId  Int
+  category    Category  @relation(fields: [categoryId], references: [id])
+  comments    Comment[]
+}
+
+model Category {
+  id      Int     @id @default(autoincrement())
+  name    String  @unique
+  videos  Video[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  videoId   Int
+  message   String
+  timestamp DateTime @default(now())
+
+  user  User   @relation(fields: [userId], references: [id])
+  video Video  @relation(fields: [videoId], references: [id])
 }

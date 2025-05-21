@@ -22,20 +22,19 @@ export const useAuthStore = defineStore('auth', {
       this.token = data.token
       localStorage.setItem('token', data.token)
 
-      this.user = { email }
+      const profileResponse = await fetch('http://localhost:3000/profile', {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      })
+      const profileData = await profileResponse.json()
+      this.user = profileData.user
     },
 
     logout() {
       this.user = null
       this.token = null
       localStorage.removeItem('token')
-    },
-
-    tryAutoLogin() {
-      const savedToken = localStorage.getItem('token')
-      if (savedToken) {
-        this.token = savedToken
-      }
     },
   },
 })

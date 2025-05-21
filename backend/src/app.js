@@ -1,15 +1,18 @@
 import Fastify from 'fastify';
 import fastifyJwt from '@fastify/jwt';
 import cors from '@fastify/cors';
-import { userRoutes } from './modules/users/user.controller.js';
+import { registerRoutes } from './router/routes.js';
 
-export async function buildApp() {
-  const app = Fastify({ logger: true });
+export async function buildApp(options = {}) {
+  const app = Fastify({ logger: options.isTest ? false : true });
 
-  app.register(cors);
-  app.register(fastifyJwt, { secret: 'your-secret-key' });
+  await app.register(cors, {
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  })
+  await app.register(fastifyJwt, { secret: 'your-secret-key' });
 
-  app.register(await import('@fastify/swagger').then(m => m.default), {
+  await app.register(await import('@fastify/swagger').then(m => m.default), {
     routePrefix: '/docs',
     swagger: {
       info: { title: 'API Docs', version: '1.0.0' },
@@ -17,11 +20,14 @@ export async function buildApp() {
     exposeRoute: true,
   });
 
-  app.get("/ping", async (request, reply) => {
-    return { pong: true };
+  app.addHook('onRequest', (req, reply, done) => {
+    app.log.info({ method: req.method, url: req.url });
+    done();
   });
 
-  app.register(userRoutes);
+  await registerRoutes(app);
+
+  await app.ready();
 
   return app;
 }

@@ -1,10 +1,13 @@
-import { prisma } from "../../utils/prisma.js";
+import {
+  getAllComments,
+  getCommentsByVideoId,
+  createComment,
+  deleteCommentById
+} from "./comment.service.js";
 
 export async function commentRoutes(app) {
   app.get("/comments", async () => {
-    return prisma.comment.findMany({
-      include: { user: true, video: true },
-    });
+    return getAllComments();
   });
 
   app.get("/videos/:videoId/comments", async (req, res) => {
@@ -14,11 +17,7 @@ export async function commentRoutes(app) {
       return res.status(400).send({ error: "Invalid video ID" });
     }
 
-    const comments = await prisma.comment.findMany({
-      where: { videoId: Number(videoId) },
-      include: { user: true },
-    });
-
+    const comments = await getCommentsByVideoId(videoId);
     return res.send(comments);
   });
 
@@ -30,15 +29,7 @@ export async function commentRoutes(app) {
     }
 
     try {
-      const comment = await prisma.comment.create({
-        data: {
-          userId,
-          videoId,
-          message,
-          timestamp: new Date(),
-        },
-      });
-
+      const comment = await createComment({ userId, videoId, message });
       return res.status(201).send(comment);
     } catch {
       return res.status(500).send({ error: "Server error" });
@@ -53,10 +44,7 @@ export async function commentRoutes(app) {
     }
 
     try {
-      await prisma.comment.delete({
-        where: { id: Number(id) },
-      });
-
+      await deleteCommentById(id);
       return res.status(204).send();
     } catch {
       return res.status(404).send({ error: "Comment not found" });

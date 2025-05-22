@@ -1,51 +1,39 @@
-import { prisma } from "../../utils/prisma.js";
+import * as categoryService from "./category.service.js";
 
 export async function categoryRoutes(app) {
-  app.get("/categories", async () => {
-    return prisma.category.findMany();
+  app.get("/categories", async (req, res) => {
+    try {
+      const categories = await categoryService.getAllCategories();
+      return res.send(categories);
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send({ error: "Server error" });
+    }
   });
 
   app.post("/categories", async (req, res) => {
-    const { name } = req.body;
-
-    if (!name) {
-      return res.status(400).send({ error: "Name is required" });
+    try {
+      const category = await categoryService.createCategory(req.body.name);
+      return res.send(category);
+    } catch (error) {
+      if (error.status && error.message) {
+        return res.status(error.status).send({ error: error.message });
+      }
+      console.error(error);
+      return res.status(500).send({ error: "Server error" });
     }
-
-    const category = await prisma.category.create({ data: { name } });
-    return category;
   });
 
   app.get("/categories/:id", async (req, res) => {
     const categoryId = Number(req.params.id);
 
-    if (!categoryId) {
-      return res.status(400).send({ error: "Invalid ID" });
-    }
-
     try {
-      const categoryWithVideos = await prisma.category.findUnique({
-        where: { id: categoryId },
-        select: {
-          id: true,
-          name: true,
-          videos: {
-            select: {
-              id: true,
-              title: true,
-              description: true,
-              url: true,
-            },
-          },
-        },
-      });
-
-      if (!categoryWithVideos) {
-        return res.status(404).send({ error: "Category not found" });
-      }
-
+      const categoryWithVideos = await categoryService.getCategoryById(categoryId);
       return res.send(categoryWithVideos);
     } catch (error) {
+      if (error.status && error.message) {
+        return res.status(error.status).send({ error: error.message });
+      }
       console.error(error);
       return res.status(500).send({ error: "Server error" });
     }
@@ -53,32 +41,14 @@ export async function categoryRoutes(app) {
 
   app.put("/categories/:id", async (req, res) => {
     const categoryId = Number(req.params.id);
-    const { name } = req.body;
-
-    if (!categoryId) {
-      return res.status(400).send({ error: "Invalid ID" });
-    }
-
-    if (!name) {
-      return res.status(400).send({ error: "Name is required" });
-    }
 
     try {
-      const existingCategory = await prisma.category.findUnique({
-        where: { id: categoryId },
-      });
-
-      if (!existingCategory) {
-        return res.status(404).send({ error: "Category not found" });
-      }
-
-      const updatedCategory = await prisma.category.update({
-        where: { id: categoryId },
-        data: { name },
-      });
-
+      const updatedCategory = await categoryService.updateCategory(categoryId, req.body.name);
       return res.send(updatedCategory);
     } catch (error) {
+      if (error.status && error.message) {
+        return res.status(error.status).send({ error: error.message });
+      }
       console.error(error);
       return res.status(500).send({ error: "Server error" });
     }
@@ -86,39 +56,16 @@ export async function categoryRoutes(app) {
 
   app.delete("/categories/:id", async (req, res) => {
     const categoryId = Number(req.params.id);
-  
-    if (!categoryId) {
-      return res.status(400).send({ error: "Invalid ID" });
-    }
-  
+
     try {
-      const existingCategory = await prisma.category.findUnique({
-        where: { id: categoryId },
-        include: { videos: true },
-      });
-  
-      if (!existingCategory) {
-        return res.status(404).send({ error: "Category not found" });
-      }
-  
-      for (const video of existingCategory.videos) {
-        await prisma.comment.deleteMany({
-          where: { videoId: video.id },
-        });
-  
-        await prisma.video.delete({
-          where: { id: video.id },
-        });
-      }
-  
-      await prisma.category.delete({
-        where: { id: categoryId },
-      });
-  
-      return res.send({ message: "Category deleted successfully" });
+      const result = await categoryService.deleteCategory(categoryId);
+      return res.send(result);
     } catch (error) {
+      if (error.status && error.message) {
+        return res.status(error.status).send({ error: error.message });
+      }
       console.error(error);
       return res.status(500).send({ error: "Server error" });
     }
-  });  
+  });
 }

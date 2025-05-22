@@ -1,13 +1,45 @@
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-gradient-to-tr from-indigo-400 via-purple-500 to-pink-500">
+  <div class="flex items-center justify-center min-h-screen bg-gradient-to-tr from-indigo-400 via-purple-500 to-blue-700 relative">
+    <button
+      @click="toggleLanguage"
+      class="absolute top-4 right-4 ml-2"
+    >
+      <img
+        v-if="locale === 'pt'"
+        src="https://flagcdn.com/w40/br.png"
+        alt="Português"
+        class="w-6 h-6 rounded shadow"
+      />
+      <img
+        v-else
+        src="https://flagcdn.com/w40/us.png"
+        alt="English"
+        class="w-6 h-6 rounded shadow"
+      />
+    </button>
+
     <div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8">
-      <h2 class="text-3xl font-extrabold mb-8 text-center text-gray-800">Cadastro</h2>
+      <h2 class="text-3xl sm:text-4xl text-center mb-8 font-extrabold text-indigo-600 drop-shadow-lg tracking-tight">
+        {{ $t('register.title') }}
+      </h2>
       <form @submit.prevent="handleRegister" class="space-y-6">
-        <input v-model="name" type="text" placeholder="Nome" class="input" required />
-        <input v-model="email" type="email" placeholder="Email" class="input" required />
-        <input v-model="password" type="password" placeholder="Senha" class="input" required />
-        <button type="submit" class="btn">Cadastrar</button>
-        <router-link to="/login" class="block text-center text-sm text-indigo-600 mt-2">Já tem conta? Entrar</router-link>
+        <BaseInput v-model="name" type="text" :placeholder="$t('register.name')" required />
+        <BaseInput v-model="email" type="email" :placeholder="$t('register.email')" required />
+        <BaseInput v-model="password" type="password" :placeholder="$t('register.password')" required />
+        <BaseButton
+          type="submit"
+          bgColor="bg-indigo-500"
+          hoverColor="hover:bg-indigo-600"
+          @click="submitForm"
+        >
+          {{ $t('register.submit') }}
+        </BaseButton>
+        <router-link
+          to="/login"
+          class="block text-center text-sm mt-2 text-indigo-500 hover:text-indigo-600 underline"
+        >
+          {{ $t('register.loginLink') }}
+        </router-link>
       </form>
     </div>
   </div>
@@ -16,17 +48,30 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import BaseInput from '../components/BaseInput.vue'
+import BaseButton from '../components/BaseButton.vue'
 
 const name = ref('')
 const email = ref('')
 const password = ref('')
 const router = useRouter()
 
+const { locale, t } = useI18n()
+
+function toggleLanguage() {
+  locale.value = locale.value === 'pt' ? 'en' : 'pt'
+}
+
 async function handleRegister() {
   const res = await fetch('http://localhost:3000/users', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name: name.value, email: email.value, password: password.value }),
+    body: JSON.stringify({
+      name: name.value,
+      email: email.value,
+      password: password.value,
+    }),
   })
 
   if (!res.ok) {
@@ -35,7 +80,7 @@ async function handleRegister() {
     return
   }
 
-  alert('Usuário cadastrado!')
+  alert(t('register.success'))
   router.push('/login')
 }
 </script>

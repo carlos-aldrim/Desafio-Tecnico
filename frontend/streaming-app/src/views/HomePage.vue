@@ -1,67 +1,72 @@
 <template>
-  <div
-    class="flex items-center justify-center min-h-screen bg-gradient-to-tr from-indigo-400 via-purple-500 to-pink-500">
-    <div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8 text-center">
-      <h2 class="text-3xl font-extrabold mb-6 text-gray-800">Bem-vindo, {{ authStore.user?.name }}</h2>
-      <p class="text-gray-600 mb-6">Email: {{ authStore.user?.email }}</p>
+  <div class="min-h-screen bg-gradient-to-tr from-indigo-400 via-purple-600 to-blue-700">
+    <NavBar />
 
-      <div class="space-y-4">
-        <button @click="router.push('/editar')" class="btn bg-yellow-500 hover:bg-yellow-600">Editar Usuário</button>
-        <button @click="handleDelete" class="btn bg-red-500 hover:bg-red-600">Deletar Usuário</button>
-        <button @click="handleLogout" class="btn bg-gray-500 hover:bg-gray-600">Sair</button>
+    <div class="flex items-center justify-center h-[calc(100vh-80px)] px-4">
+      <div
+        class="w-full max-w-xl bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl p-10 text-center"
+      >
+        <h2
+          class="text-5xl sm:text-6xl font-extrabold mb-6 text-indigo-900 animate-fadeInUp"
+        >
+          <i18n-t keypath="home.welcome">
+            <template #name>
+              <span class="modern-name">{{ authStore.user?.name || '...' }}</span>
+            </template>
+          </i18n-t>
+        </h2>
+        <p class="text-indigo-800 text-lg sm:text-xl font-semibold">
+          {{ $t('home.description') }}
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
+import NavBar from '../components/NavBar.vue'
 import { useAuthStore } from '../stores/auth'
 
 const authStore = useAuthStore()
-const router = useRouter()
-
-function handleLogout() {
-  authStore.logout()
-  router.push('/login')
-}
-
-async function handleDelete() {
-  if (!confirm('Tem certeza que deseja excluir sua conta?')) return
-
-  console.log(authStore.token);
-
-  const res = await fetch(`http://localhost:3000/users/${authStore.user.id}`, {
-    method: 'DELETE',
-    headers: { Authorization: `Bearer ${authStore.token}1` },
-  })
-
-  console.log(res);
-
-  if (res.ok) {
-    alert('Conta excluída.')
-    authStore.logout()
-    router.push('/login')
-  } else {
-    const err = await res.json()
-    alert(err.error)
-  }
-}
 </script>
 
 <style scoped>
-.input {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fadeInUp {
+  animation: fadeInUp 1.2s ease forwards;
 }
 
-.btn {
-  width: 100%;
-  padding: 0.75rem;
-  color: white;
-  border-radius: 0.5rem;
-  font-weight: 600;
+.modern-name {
+  background: linear-gradient(90deg, #7c3aed, #4f46e5, #3b82f6, #6366f1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+  font-weight: 900;
+  text-decoration: underline;
+  text-decoration-thickness: 4px;
+  text-underline-offset: 6px;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
+  overflow: hidden;
+  display: inline-block;
+  cursor: default;
+  animation: shine 2.5s infinite;
+}
+
+@keyframes shine {
+  0% {
+    background-position: -200%;
+  }
+  100% {
+    background-position: 200%;
+  }
 }
 </style>

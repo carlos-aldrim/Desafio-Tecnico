@@ -1,0 +1,161 @@
+{
+  "home": {
+    "welcome": "Seja bem-vindo, {name}!",
+    "description": "Conheça minha plataforma de vídeos!"
+  },
+  "navbar": {
+    "home": "Início",
+    "videos": "Vídeos",
+    "categories": "Categorias",
+    "user": "Usuário",
+    "admin": "Administrador"
+  },
+  "videos": {
+    "title": "Lista de Vídeos",
+    "category": "Categoria",
+    "watch": "Assistir",
+    "edit": "Editar vídeo",
+    "delete": "Deletar vídeo",
+    "confirmDelete": "Tem certeza que deseja deletar este vídeo?",
+    "deleteFail": "Falha ao deletar o vídeo.",
+    "previous": "‹ Anterior",
+    "next": "Próximo ›",
+    "newVideo": "Adicionar novo vídeo",
+    "fetchError": "Erro ao buscar vídeos"
+  },
+  "videoCreate": {
+    "newVideoTitle": "Novo Vídeo",
+    "title": "Título",
+    "description": "Descrição",
+    "url": "URL do vídeo",
+    "selectCategory": "Selecione a categoria",
+    "saveVideo": "Salvar Vídeo",
+    "back": "Voltar",
+    "saveError": "Erro ao salvar vídeo"
+  },
+  "videoEdit": {
+    "editVideoTitle": "Editar Vídeo",
+    "title": "Título",
+    "description": "Descrição",
+    "url": "URL do vídeo",
+    "selectCategory": "Selecione a categoria",
+    "updateVideo": "Atualizar o vídeo",
+    "back": "Voltar",
+    "updateError": "Erro ao atualizar vídeo"
+  },
+  "comments": {
+    "title": "Comentários",
+    "previous": "Anterior",
+    "next": "Próximo",
+    "placeholder": "Escreva seu comentário...",
+    "send": "Enviar Comentário",
+    "loginRequired": "Você precisa estar logado para comentar.",
+    "confirmDelete": "Tem certeza que deseja deletar este comentário?"
+  },
+  "settings": {
+    "title": "Configuração de Usuário",
+    "edit": "Editar",
+    "delete": "Deletar",
+    "logout": "Sair",
+    "back": "Voltar",
+    "confirmDelete": "Tem certeza que deseja excluir sua conta?",
+    "deleted": "Conta excluída."
+  },
+  "register": {
+    "title": "Cadastro",
+    "name": "Nome",
+    "email": "Email",
+    "password": "Senha",
+    "submit": "Cadastrar",
+    "loginLink": "Já tem conta? Entrar",
+    "success": "Usuário cadastrado!"
+  },
+  "login": {
+    "title": "Login",
+    "emailLabel": "Email",
+    "emailPlaceholder": "seu.email@exemplo.com",
+    "passwordLabel": "Senha",
+    "passwordPlaceholder": "••••••••",
+    "button": "Entrar",
+    "registerLink": "Não tem conta? Clique aqui",
+    "error": "Falha no login"
+  },
+  "profile": {
+    "title": "Perfil",
+    "namePlaceholder": "Nome",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "Nova senha (opcional)",
+    "saveButton": "Salvar Alterações",
+    "backButton": "Voltar",
+    "success": "Dados atualizados com sucesso!"
+  },
+  "category": {
+    "title": "Vídeos da Categoria",
+    "label": "Categoria",
+    "watch": "Assistir",
+    "none": "Nenhum vídeo encontrado nesta categoria."
+  },
+  "pagination": {
+    "prev": "Anterior",
+    "next": "Próximo"
+  },
+  "categories": {
+    "title": "Categorias",
+    "edit": "Editar categoria",
+    "delete": "Remover categoria",
+    "newCategory": "Nova categoria",
+    "errorFetching": "Erro ao carregar categorias.",
+    "previous": "‹ Anterior",
+    "next": "Próximo ›",
+    "confirmDelete": "Tem certeza que deseja remover esta categoria?",
+    "deleteError": "Erro ao deletar categoria.",
+    "alertDeleteError": "Erro ao deletar categoria.",
+    "fetchError": "Erro ao buscar categorias.",
+    "apiResponseError": "Erro na resposta da API.",
+    "nameRequired": "O nome da categoria é obrigatório.",
+    "updateError": "Erro ao atualizar a categoria.",
+    "createError": "Erro ao criar a categoria."
+  },
+  "adminEditUser": {
+    "title": "Editar Usuário",
+    "namePlaceholder": "Nome",
+    "emailPlaceholder": "Email",
+    "selectRole": "Selecione o tipo de usuário",
+    "roleUser": "Usuário",
+    "roleAdmin": "Administrador",
+    "saveButton": "Salvar Alterações",
+    "backToPanel": "Voltar ao Painel",
+    "errorFetching": "Erro ao buscar usuário.",
+    "errorUpdating": "Erro ao atualizar usuário.",
+    "successUpdating": "Usuário atualizado com sucesso!",
+    "requestError": "Erro na requisição."
+  },
+  "adminPanel": {
+    "title": "Painel do Administrador",
+    "selectAll": "Todos",
+    "roleAdmin": "Administradores",
+    "roleUser": "Usuários",
+    "editUser": "Editar usuário",
+    "deleteUser": "Deletar usuário",
+    "prev": "‹ Anterior",
+    "next": "Próximo ›",
+    "addAdmin": "Adicionar novo administrador",
+    "confirmDelete": "Tem certeza que deseja excluir este usuário?",
+    "userDeleted": "Usuário excluído com sucesso.",
+    "fetchUsers": "Erro ao buscar usuários"
+  },
+  "adminCreateUser": {
+    "title": "Criar Novo Usuário",
+    "name": "Nome",
+    "email": "Email",
+    "password": "Senha",
+    "selectRole": "Selecione o tipo de usuário",
+    "roleUser": "Usuário",
+    "roleAdmin": "Administrador",
+    "submit": "Criar Usuário",
+    "backToPanel": "Voltar ao Painel",
+    "errorCreate": "Erro ao criar usuário.",
+    "successCreate": "Usuário criado com sucesso!",
+    "errorRequest": "Erro na requisição."
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "home": {
+    "welcome": "Welcome, {name}!",
+    "description": "Check out my video platform!"
+  },
+  "navbar": {
+    "home": "Home",
+    "videos": "Videos",
+    "categories": "Categories",
+    "user": "User",
+    "admin": "Admin"
+  },
+  "videos": {
+    "title": "Video List",
+    "category": "Category",
+    "watch": "Watch",
+    "edit": "Edit video",
+    "delete": "Delete video",
+    "confirmDelete": "Are you sure you want to delete this video?",
+    "deleteFail": "Failed to delete the video.",
+    "previous": "‹ Previous",
+    "next": "Next ›",
+    "newVideo": "Add new video",
+    "fetchError": "Error fetching videos"
+  },
+  "videoCreate": {
+    "newVideoTitle": "New Video",
+    "title": "Title",
+    "description": "Description",
+    "url": "Video URL",
+    "selectCategory": "Select category",
+    "saveVideo": "Save Video",
+    "back": "Back",
+    "saveError": "Error saving video"
+  },
+  "videoEdit": {
+    "editVideoTitle": "Edit Video",
+    "title": "Title",
+    "description": "Description",
+    "url": "Video URL",
+    "selectCategory": "Select a category",
+    "updateVideo": "Update Video",
+    "back": "Back",
+    "updateError": "Error updating video"
+  },
+  "comments": {
+    "title": "Comments",
+    "previous": "Previous",
+    "next": "Next",
+    "placeholder": "Write your comment...",
+    "send": "Send Comment",
+    "loginRequired": "You need to be logged in to comment.",
+    "confirmDelete": "Are you sure you want to delete this comment?"
+  },
+  "settings": {
+    "title": "User Settings",
+    "edit": "Edit",
+    "delete": "Delete",
+    "logout": "Logout",
+    "back": "Back",
+    "confirmDelete": "Are you sure you want to delete your account?",
+    "deleted": "Account deleted."
+  },
+  "register": {
+    "title": "Sign Up",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Register",
+    "loginLink": "Already have an account? Log in",
+    "success": "User registered!"
+  },
+  "login": {
+    "title": "Login",
+    "emailLabel": "Email",
+    "emailPlaceholder": "your.email@example.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "••••••••",
+    "button": "Login",
+    "registerLink": "Don't have an account? Click here",
+    "error": "Login failed"
+  },
+  "profile": {
+    "title": "Profile",
+    "namePlaceholder": "Name",
+    "emailPlaceholder": "Email",
+    "passwordPlaceholder": "New password (optional)",
+    "saveButton": "Save Changes",
+    "backButton": "Back",
+    "success": "Data updated successfully!"
+  },
+  "category": {
+    "title": "Category Videos",
+    "label": "Category",
+    "watch": "Watch",
+    "none": "No videos found in this category."
+  },
+  "pagination": {
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "categories": {
+    "title": "Categories",
+    "edit": "Edit category",
+    "delete": "Delete category",
+    "newCategory": "New category",
+    "errorFetching": "Error loading categories.",
+    "previous": "‹ Previous",
+    "next": "Next ›",
+    "confirmDelete": "Are you sure you want to delete this category?",
+    "deleteError": "Error deleting category.",
+    "alertDeleteError": "An error occurred while deleting the category.",
+    "fetchError": "Error fetching categories.",
+    "apiResponseError": "API response error.",
+    "nameRequired": "Category name is required.",
+    "updateError": "Error updating category.",
+    "createError": "Error creating category."
+  },
+  "adminEditUser": {
+    "title": "Edit User",
+    "namePlaceholder": "Name",
+    "emailPlaceholder": "Email",
+    "selectRole": "Select user type",
+    "roleUser": "User",
+    "roleAdmin": "Administrator",
+    "saveButton": "Save Changes",
+    "backToPanel": "Back to Panel",
+    "errorFetching": "Error fetching user.",
+    "errorUpdating": "Error updating user.",
+    "successUpdating": "User updated successfully!",
+    "requestError": "Request error."
+  },
+  "adminPanel": {
+    "title": "Admin Panel",
+    "selectAll": "All",
+    "roleAdmin": "Administrators",
+    "roleUser": "Users",
+    "editUser": "Edit user",
+    "deleteUser": "Delete user",
+    "prev": "‹ Previous",
+    "next": "Next ›",
+    "addAdmin": "Add new administrator",
+    "confirmDelete": "Are you sure you want to delete this user?",
+    "userDeleted": "User successfully deleted.",
+    "fetchUsers": "Error fetching users"
+  },
+  "adminCreateUser": {
+    "title": "Create New User",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "selectRole": "Select user type",
+    "roleUser": "User",
+    "roleAdmin": "Administrator",
+    "submit": "Create User",
+    "backToPanel": "Back to Panel",
+    "errorCreate": "Failed to create user.",
+    "successCreate": "User created successfully!",
+    "errorRequest": "Request error."
+  }
+}

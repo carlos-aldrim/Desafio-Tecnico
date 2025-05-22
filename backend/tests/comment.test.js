@@ -17,20 +17,20 @@ describe("Comment Tests", () => {
   test("Should create a new comment", async () => {
     const user = await prisma.user.create({
       data: {
-        name: "Teste 0001",
-        email: "teste@example.com",
-        password: hashPassword("password123"),
+        name: "João da Silva",
+        email: "joao.silva@teste.com",
+        password: hashPassword("senha123"),
       },
     });
 
     const category = await prisma.category.create({
-      data: { name: "Test 001" },
+      data: { name: "Aula" },
     });
 
     const video = await prisma.video.create({
       data: {
-        title: "Test 001",
-        url: "https://example.com/video",
+        title: "Como usar o Prisma",
+        url: "https://meusite.com/video-prisma",
         categoryId: category.id,
       },
     });
@@ -38,12 +38,12 @@ describe("Comment Tests", () => {
     const res = await request(app.server).post("/comments").send({
       userId: user.id,
       videoId: video.id,
-      message: "This is a test comment",
+      message: "Muito bom esse tutorial, obrigado!",
     });
 
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty("id");
-    expect(res.body.message).toBe("This is a test comment");
+    expect(res.body.message).toBe("Muito bom esse tutorial, obrigado!");
 
     await prisma.comment.delete({ where: { id: res.body.id } });
     await prisma.video.delete({ where: { id: video.id } });
@@ -54,21 +54,9 @@ describe("Comment Tests", () => {
   test("Should fail to create comment with missing fields", async () => {
     const user = await prisma.user.create({
       data: {
-        name: "Teste 002",
-        email: "teste@example.com",
-        password: hashPassword("password123"),
-      },
-    });
-
-    const category = await prisma.category.create({
-      data: { name: "Test 002" },
-    });
-
-    const video = await prisma.video.create({
-      data: {
-        title: "Test 002",
-        url: "https://example.com/video",
-        categoryId: category.id,
+        name: "Maria Oliveira",
+        email: "maria.oliveira@teste.com",
+        password: hashPassword("senha123"),
       },
     });
 
@@ -77,30 +65,75 @@ describe("Comment Tests", () => {
     });
 
     expect(res.statusCode).toBe(400);
-    expect(res.body).toHaveProperty("error", "Missing fields");
+    expect(res.body).toHaveProperty("error", "Missing required fields");
+
+    await prisma.user.delete({ where: { id: user.id } });
+  });
+
+  test("Should fail to create comment with non-existent user", async () => {
+    const category = await prisma.category.create({
+      data: { name: "Escola" },
+    });
+
+    const video = await prisma.video.create({
+      data: {
+        title: "Aulas de Matemática",
+        url: "https://exemplo.com/matematica",
+        categoryId: category.id,
+      },
+    });
+
+    const res = await request(app.server).post("/comments").send({
+      userId: 99999,
+      videoId: video.id,
+      message: "Comentário com usuário inválido",
+    });
+
+    expect(res.statusCode).toBe(500);
+    expect(res.body).toHaveProperty("error");
 
     await prisma.video.delete({ where: { id: video.id } });
     await prisma.category.delete({ where: { id: category.id } });
+  });
+
+  test("Should fail to create comment with non-existent video", async () => {
+    const user = await prisma.user.create({
+      data: {
+        name: "Carlos Mendes",
+        email: "carlos.mendes@teste.com",
+        password: hashPassword("senha123"),
+      },
+    });
+
+    const res = await request(app.server).post("/comments").send({
+      userId: user.id,
+      videoId: 99999,
+      message: "Comentário com vídeo inválido",
+    });
+
+    expect(res.statusCode).toBe(500);
+    expect(res.body).toHaveProperty("error");
+
     await prisma.user.delete({ where: { id: user.id } });
   });
 
   test("Should return all comments with user and video info", async () => {
     const user = await prisma.user.create({
       data: {
-        name: "Teste 003",
-        email: "teste@example.com",
-        password: hashPassword("password123"),
+        name: "Ana Clara",
+        email: "ana.clara@teste.com",
+        password: hashPassword("senha123"),
       },
     });
 
     const category = await prisma.category.create({
-      data: { name: "Test 003" },
+      data: { name: "Design" },
     });
 
     const video = await prisma.video.create({
       data: {
-        title: "Test 003",
-        url: "https://example.com/video",
+        title: "Introdução ao Figma",
+        url: "https://exemplo.com/figma",
         categoryId: category.id,
       },
     });
@@ -109,7 +142,7 @@ describe("Comment Tests", () => {
       data: {
         userId: user.id,
         videoId: video.id,
-        message: "This is a test comment",
+        message: "Ótimo vídeo!",
       },
     });
 
@@ -129,20 +162,20 @@ describe("Comment Tests", () => {
   test("Should return comments for specific video", async () => {
     const user = await prisma.user.create({
       data: {
-        name: "Teste 004",
-        email: "teste@example.com",
-        password: hashPassword("password123"),
+        name: "Bruno Souza",
+        email: "bruno.souza@teste.com",
+        password: hashPassword("senha123"),
       },
     });
 
     const category = await prisma.category.create({
-      data: { name: "Test 004" },
+      data: { name: "História" },
     });
 
     const video = await prisma.video.create({
       data: {
-        title: "Test 004",
-        url: "https://example.com/video",
+        title: "Revolução Francesa",
+        url: "https://exemplo.com/historia",
         categoryId: category.id,
       },
     });
@@ -151,7 +184,7 @@ describe("Comment Tests", () => {
       data: {
         userId: user.id,
         videoId: video.id,
-        message: "This is a test comment",
+        message: "Muito interessante!",
       },
     });
 
@@ -166,5 +199,64 @@ describe("Comment Tests", () => {
     await prisma.video.delete({ where: { id: video.id } });
     await prisma.category.delete({ where: { id: category.id } });
     await prisma.user.delete({ where: { id: user.id } });
+  });
+
+  test("Should fail to get comments with invalid video ID", async () => {
+    const res = await request(app.server).get("/videos/abc/comments");
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toHaveProperty("error", "Invalid video ID");
+  });
+
+  test("Should delete a comment", async () => {
+    const user = await prisma.user.create({
+      data: {
+        name: "Lúcia Santos",
+        email: "lucia.santos@teste.com",
+        password: hashPassword("senha123"),
+      },
+    });
+
+    const category = await prisma.category.create({
+      data: { name: "Ciência" },
+    });
+
+    const video = await prisma.video.create({
+      data: {
+        title: "Física Quântica",
+        url: "https://exemplo.com/fisica",
+        categoryId: category.id,
+      },
+    });
+
+    const comment = await prisma.comment.create({
+      data: {
+        userId: user.id,
+        videoId: video.id,
+        message: "Incrível!",
+      },
+    });
+
+    const res = await request(app.server).delete(`/comments/${comment.id}`);
+
+    expect(res.statusCode).toBe(204);
+
+    await prisma.video.delete({ where: { id: video.id } });
+    await prisma.category.delete({ where: { id: category.id } });
+    await prisma.user.delete({ where: { id: user.id } });
+  });
+
+  test("Should return 400 when deleting comment with invalid ID", async () => {
+    const res = await request(app.server).delete("/comments/abc");
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toHaveProperty("error", "Invalid comment ID");
+  });
+
+  test("Should return 404 when deleting non-existent comment", async () => {
+    const res = await request(app.server).delete("/comments/999999");
+
+    expect(res.statusCode).toBe(404);
+    expect(res.body).toHaveProperty("error", "Comment not found");
   });
 });

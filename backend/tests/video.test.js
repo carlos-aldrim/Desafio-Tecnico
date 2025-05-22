@@ -2,7 +2,7 @@ import request from "supertest";
 import { buildApp } from "../src/app.js";
 import { prisma } from "../src/utils/prisma.js";
 
-describe("Video Tests", () => {
+describe("Video Routes", () => {
   let app;
 
   beforeAll(async () => {
@@ -15,19 +15,19 @@ describe("Video Tests", () => {
 
   test("Should create a new video", async () => {
     const category = await prisma.category.create({
-      data: { name: "Test 001" }
+      data: { name: "Documentário" }
     });
 
     const res = await request(app.server).post("/videos").send({
-      title: "Test 001",
-      description: "teste",
-      url: "https://teste.com/video.mp4",
+      title: "A História da Internet",
+      description: "Documentário sobre a evolução da internet.",
+      url: "https://videosite.com/internet-history.mp4",
       categoryId: category.id,
     });
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty("id");
-    expect(res.body.title).toBe("Test 001");
+    expect(res.body.title).toBe("A História da Internet");
 
     await prisma.video.delete({ where: { id: res.body.id } });
     await prisma.category.delete({ where: { id: category.id } });
@@ -35,11 +35,11 @@ describe("Video Tests", () => {
 
   test("Should not create a video with missing fields", async () => {
     const category = await prisma.category.create({
-      data: { name: "Test 002" }
+      data: { name: "Educação" }
     });
 
     const res = await request(app.server).post("/videos").send({
-      title: "Teste 002",
+      title: "Curso de Física Básica",
       url: "",
       categoryId: category.id,
     });
@@ -52,14 +52,14 @@ describe("Video Tests", () => {
 
   test("Should return all videos", async () => {
     const category = await prisma.category.create({
-      data: { name: "Test 003" }
+      data: { name: "Tecnologia" }
     });
 
     const video = await prisma.video.create({
       data: {
-        title: "Test 003",
-        description: "teste",
-        url: "https://teste.com/movie.mp4",
+        title: "O Futuro da IA",
+        description: "Explorando o impacto da inteligência artificial.",
+        url: "https://videosite.com/ia-futuro.mp4",
         categoryId: category.id,
       },
     });
@@ -76,14 +76,14 @@ describe("Video Tests", () => {
 
   test("Should return a specific video by ID", async () => {
     const category = await prisma.category.create({
-      data: { name: "Test 004" }
+      data: { name: "Cinema" }
     });
 
     const video = await prisma.video.create({
       data: {
-        title: "Test 004",
-        description: "teste",
-        url: "https://teste.com/movie.mp4",
+        title: "Making of de um Filme",
+        description: "Os bastidores da produção de um longa.",
+        url: "https://videosite.com/making-of.mp4",
         categoryId: category.id,
       },
     });
@@ -105,16 +105,44 @@ describe("Video Tests", () => {
     expect(res.body).toHaveProperty("error", "Video not found");
   });
 
-  test("Should delete a video", async () => {
+  test("Should update an existing video", async () => {
     const category = await prisma.category.create({
-      data: { name: "Test 005" }
+      data: { name: "Atualização" }
     });
 
     const video = await prisma.video.create({
       data: {
-        title: "Test 005",
-        description: "teste",
-        url: "https://teste.com/movie.mp4",
+        title: "Título Antigo",
+        description: "Descrição antiga",
+        url: "https://videosite.com/old.mp4",
+        categoryId: category.id,
+      },
+    });
+
+    const res = await request(app.server).put(`/videos/${video.id}`).send({
+      title: "Título Atualizado",
+      description: "Descrição atualizada com mais detalhes.",
+      url: "https://videosite.com/updated.mp4",
+      categoryId: category.id,
+    });
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body.title).toBe("Título Atualizado");
+
+    await prisma.video.delete({ where: { id: video.id } });
+    await prisma.category.delete({ where: { id: category.id } });
+  });
+
+  test("Should delete a video", async () => {
+    const category = await prisma.category.create({
+      data: { name: "Remoção" }
+    });
+
+    const video = await prisma.video.create({
+      data: {
+        title: "Video Temporário",
+        description: "Será removido em breve.",
+        url: "https://videosite.com/temp.mp4",
         categoryId: category.id,
       },
     });
@@ -129,14 +157,14 @@ describe("Video Tests", () => {
 
   test("Should return an empty list after deletion", async () => {
     const category = await prisma.category.create({
-      data: { name: "Test 006" }
+      data: { name: "Exclusão" }
     });
 
     const video = await prisma.video.create({
       data: {
-        title: "Teste 006",
-        description: "teste",
-        url: "https://teste.com/only.mp4",
+        title: "Video Único",
+        description: "Deve ser o único e será excluído.",
+        url: "https://videosite.com/unique.mp4",
         categoryId: category.id,
       },
     });

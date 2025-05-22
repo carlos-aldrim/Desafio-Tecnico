@@ -7,10 +7,19 @@ export async function userRoutes(app) {
   });
 
   app.post("/users", async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     if (!email || !password || !name) {
-      return res.status(400).send({ error: "Missing fields" });
+      return res.status(400).send({ error: "Missing required fields" });
+    }
+
+    const validRoles = ["user", "admin"];
+    const userRole = role || "user";
+
+    if (!validRoles.includes(userRole)) {
+      return res
+        .status(400)
+        .send({ error: "Invalid role. Must be 'user' or 'admin'." });
     }
 
     const existingUser = await prisma.user.findUnique({ where: { email } });
@@ -23,13 +32,16 @@ export async function userRoutes(app) {
         name,
         email,
         password: hashPassword(password),
+        role: userRole,
       },
     });
-    return user;
+
+    return res.status(201).send(user);
   });
 
   app.post("/login", async (req, reply) => {
     const { email, password } = req.body;
+
     const user = await prisma.user.findUnique({ where: { email } });
 
     if (!user || !comparePassword(password, user.password)) {
@@ -37,6 +49,7 @@ export async function userRoutes(app) {
     }
 
     const token = app.jwt.sign({ id: user.id, email: user.email });
+
     return { token };
   });
 
@@ -49,12 +62,35 @@ export async function userRoutes(app) {
   });
 
   app.get("/profile", { preHandler: [app.authenticate] }, async (req, res) => {
-    return { user: req.user };
+    const userId = req.user.id;
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    return {
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+      },
+    };
   });
 
   app.put("/users/:id", { preHandler: [app.authenticate] }, async (req, res) => {
     const { id } = req.params;
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     const user = await prisma.user.findUnique({ where: { id: Number(id) } });
     if (!user) {
@@ -65,13 +101,14 @@ export async function userRoutes(app) {
     if (name) dataToUpdate.name = name;
     if (email) dataToUpdate.email = email;
     if (password) dataToUpdate.password = hashPassword(password);
+    if (role) dataToUpdate.role = role;
 
     const updatedUser = await prisma.user.update({
       where: { id: Number(id) },
       data: dataToUpdate,
     });
 
-    return updatedUser;
+    return res.send(updatedUser);
   });
 
   app.delete("/users/:id", { preHandler: [app.authenticate] }, async (req, res) => {
@@ -82,7 +119,43 @@ export async function userRoutes(app) {
       return res.status(404).send({ error: "User not found" });
     }
 
+    await prisma.comment.deleteMany({ where: { userId: Number(id) } });
+
     await prisma.user.delete({ where: { id: Number(id) } });
-    return { message: "User deleted successfully" };
+    return res.send({ message: "User deleted successfully" });
+  });
+
+  app.get("/admins", { preHandler: [app.authenticate] }, async (req, res) => {
+    const admins = await prisma.user.findMany({
+      where: { role: "admin" },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+      },
+    });
+
+    return res.send(admins);
+  });
+
+  app.get("/users/:id", { preHandler: [app.authenticate] }, async (req, res) => {
+    const { id } = req.params;
+
+    const user = await prisma.user.findUnique({
+      where: { id: Number(id) },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).send({ error: "User not found" });
+    }
+
+    return res.send(user);
   });
 }

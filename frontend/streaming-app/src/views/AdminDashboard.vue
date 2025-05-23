@@ -90,6 +90,7 @@ import { useI18n } from 'vue-i18n'
 import NavBar from '../components/NavBar.vue'
 import { useAuthStore } from '../stores/auth.js'
 import { useRouter } from 'vue-router'
+import { API_BASE } from '../config/api.js'
 
 const { t } = useI18n()
 
@@ -103,7 +104,7 @@ const selectedRole = ref('')
 
 const fetchAdmins = async () => {
   try {
-    const response = await fetch('http://localhost:3000/users', {
+    const response = await fetch(`${API_BASE}/users`, {
       headers: {
         Authorization: `Bearer ${authStore.token}`,
       },
@@ -118,7 +119,7 @@ const fetchAdmins = async () => {
 const deleteUser = async (userId) => {
   if (!confirm(t('adminPanel.confirmDelete'))) return
 
-  const res = await fetch(`http://localhost:3000/users/${userId}`, {
+  const res = await fetch(`${API_BASE}/users/${userId}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${authStore.token}` },
   })

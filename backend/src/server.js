@@ -1,7 +1,7 @@
 import { startTracing } from './otel.js';
 import { buildApp } from "./app.js";
-import { prisma } from "../src/utils/prisma.js";
-import { hashPassword } from "../src/utils/hash.js";
+import { prisma } from "./utils/prisma.js";
+import { hashPassword } from "./utils/hash.js";
 
 async function createDefaultAdmin() {
   const existingAdmin = await prisma.user.findFirst({

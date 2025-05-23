@@ -66,6 +66,7 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import NavBar from '../components/NavBar.vue'
+import { API_BASE } from '../config/api.js'
 
 const route = useRoute()
 const categoryId = ref(route.params.id)
@@ -76,7 +77,7 @@ const pageSize = 4
 
 const fetchCategoryWithVideos = async () => {
   try {
-    const res = await fetch(`http://localhost:3000/categories/${categoryId.value}`)
+    const res = await fetch(`${API_BASE}/categories/${categoryId.value}`)
     if (!res.ok) throw new Error('Erro na resposta da API')
 
     const categoryData = await res.json()

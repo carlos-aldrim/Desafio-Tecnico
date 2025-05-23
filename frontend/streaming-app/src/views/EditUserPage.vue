@@ -40,6 +40,7 @@ import { useAuthStore } from '../stores/auth'
 import BaseInput from '../components/BaseInput.vue'
 import BaseButton from '../components/BaseButton.vue'
 import { useI18n } from 'vue-i18n'
+import { API_BASE } from '../config/api.js'
 
 const authStore = useAuthStore()
 const router = useRouter()
@@ -56,7 +57,7 @@ onMounted(() => {
 })
 
 async function handleEdit() {
-  const res = await fetch(`http://localhost:3000/users/${authStore.user.id}`, {
+  const res = await fetch(`${API_BASE}/users/${authStore.user.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

@@ -52,6 +52,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import BaseButton from '../components/BaseButton.vue'
 import { useI18n } from 'vue-i18n'
+import { API_BASE } from '../config/api.js'
 
 const { t } = useI18n()
 const authStore = useAuthStore()
@@ -65,7 +66,7 @@ function handleLogout() {
 async function handleDelete() {
   if (!confirm(t('settings.confirmDelete'))) return
 
-  const res = await fetch(`http://localhost:3000/users/${authStore.user.id}`, {
+  const res = await fetch(`${API_BASE}/users/${authStore.user.id}`, {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${authStore.token}` },
   })

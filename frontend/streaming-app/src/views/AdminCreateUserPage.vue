@@ -50,6 +50,7 @@ import { useAuthStore } from '../stores/auth'
 import BaseInput from '../components/BaseInput.vue'
 import BaseButton from '../components/BaseButton.vue'
 import { useI18n } from 'vue-i18n'
+import { API_BASE } from '../config/api.js'
 
 const router = useRouter()
 const auth = useAuthStore()
@@ -64,7 +65,7 @@ const form = ref({
 
 const handleSubmit = async () => {
   try {
-    const res = await fetch('http://localhost:3000/users', {
+    const res = await fetch(`${API_BASE}/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

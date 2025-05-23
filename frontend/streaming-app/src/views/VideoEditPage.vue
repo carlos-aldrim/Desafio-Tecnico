@@ -44,6 +44,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import BaseInput from '../components/BaseInput.vue'
 import BaseButton from '../components/BaseButton.vue'
+import { API_BASE } from '../config/api.js'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -56,11 +57,11 @@ const categoryId = ref('')
 const categories = ref([])
 
 onMounted(async () => {
-  const catRes = await fetch('http://localhost:3000/categories')
+  const catRes = await fetch(`${API_BASE}/categories`)
   categories.value = await catRes.json()
 
   const videoId = route.params.id
-  const videoRes = await fetch(`http://localhost:3000/videos/${videoId}`)
+  const videoRes = await fetch(`${API_BASE}/videos/${videoId}`)
   const video = await videoRes.json()
 
   title.value = video.title
@@ -72,7 +73,7 @@ onMounted(async () => {
 async function handleSubmit() {
   const videoId = route.params.id
 
-  const res = await fetch(`http://localhost:3000/videos/${videoId}`, {
+  const res = await fetch(`${API_BASE}/videos/${videoId}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

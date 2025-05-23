@@ -56,6 +56,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import BaseInput from '../components/BaseInput.vue'
 import BaseButton from '../components/BaseButton.vue'
+import { API_BASE } from '../config/api.js'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -67,12 +68,12 @@ const categoryId = ref('')
 const categories = ref([])
 
 onMounted(async () => {
-  const res = await fetch('http://localhost:3000/categories')
+  const res = await fetch(`${API_BASE}/categories`)
   categories.value = await res.json()
 })
 
 async function handleSubmit() {
-  const res = await fetch('http://localhost:3000/videos', {
+  const res = await fetch(`${API_BASE}/videos`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

@@ -1,18 +1,17 @@
 import http from "k6/http";
 import { check, sleep } from "k6";
+import { API_BASE } from "./config/api.js";
 
 export const options = {
   vus: 5,
   duration: "30s",
 };
 
-const BASE_URL = "http://localhost:3000";
-
 export default function () {
   const categoryPayload = JSON.stringify({ name: `Category${Math.random()}` });
   const headers = { headers: { "Content-Type": "application/json" } };
 
-  const categoryRes = http.post(`${BASE_URL}/categories`, categoryPayload, headers);
+  const categoryRes = http.post(`${API_BASE}/categories`, categoryPayload, headers);
   check(categoryRes, {
     "create category status is 200": (r) => r.status === 200,
   });
@@ -27,7 +26,7 @@ export default function () {
     categoryId,
   });
 
-  const createRes = http.post(`${BASE_URL}/videos`, videoPayload, headers);
+  const createRes = http.post(`${API_BASE}/videos`, videoPayload, headers);
   check(createRes, {
     "create video status is 200": (r) => r.status === 200,
   });
@@ -35,12 +34,12 @@ export default function () {
   const video = createRes.json();
   const videoId = video.id;
 
-  const listRes = http.get(`${BASE_URL}/videos`);
+  const listRes = http.get(`${API_BASE}/videos`);
   check(listRes, {
     "list videos status is 200": (r) => r.status === 200,
   });
 
-  const getRes = http.get(`${BASE_URL}/videos/${videoId}`);
+  const getRes = http.get(`${API_BASE}/videos/${videoId}`);
   check(getRes, {
     "get video by id status is 200": (r) => r.status === 200,
   });
@@ -52,17 +51,17 @@ export default function () {
     categoryId,
   });
 
-  const updateRes = http.put(`${BASE_URL}/videos/${videoId}`, updatePayload, headers);
+  const updateRes = http.put(`${API_BASE}/videos/${videoId}`, updatePayload, headers);
   check(updateRes, {
     "update video status is 200": (r) => r.status === 200,
   });
 
-  const deleteRes = http.del(`${BASE_URL}/videos/${videoId}`);
+  const deleteRes = http.del(`${API_BASE}/videos/${videoId}`);
   check(deleteRes, {
     "delete video status is 200": (r) => r.status === 200,
   });
 
-  const deleteCategoryRes = http.del(`${BASE_URL}/categories/${categoryId}`);
+  const deleteCategoryRes = http.del(`${API_BASE}/categories/${categoryId}`);
   check(deleteCategoryRes, {
     "delete category status is 200": (r) => r.status === 200,
   });

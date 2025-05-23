@@ -51,6 +51,7 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import BaseInput from '../components/BaseInput.vue'
 import BaseButton from '../components/BaseButton.vue'
+import { API_BASE } from '../config/api.js'
 
 const name = ref('')
 const email = ref('')
@@ -64,7 +65,7 @@ function toggleLanguage() {
 }
 
 async function handleRegister() {
-  const res = await fetch('http://localhost:3000/users', {
+  const res = await fetch(`${API_BASE}/users`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

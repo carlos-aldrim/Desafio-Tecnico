@@ -73,6 +73,7 @@ import { useRoute } from 'vue-router'
 import NavBar from '../components/NavBar.vue'
 import { useAuthStore } from '../stores/auth'
 import { useI18n } from 'vue-i18n'
+import { API_BASE } from '../config/api.js'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -87,7 +88,7 @@ const pageSize = 5
 
 const fetchVideo = async () => {
   try {
-    const res = await fetch(`http://localhost:3000/videos`)
+    const res = await fetch(`${API_BASE}/videos`)
     const data = await res.json()
     video.value = data.find(v => v.id === Number(videoId))
   } catch (err) {
@@ -97,7 +98,7 @@ const fetchVideo = async () => {
 
 const fetchComments = async () => {
   try {
-    const res = await fetch(`http://localhost:3000/videos/${videoId}/comments`)
+    const res = await fetch(`${API_BASE}/videos/${videoId}/comments`)
     const data = await res.json()
     comments.value = data
   } catch (err) {
@@ -114,7 +115,7 @@ const postComment = async () => {
   }
 
   try {
-    await fetch(`http://localhost:3000/comments`, {
+    await fetch(`${API_BASE}/comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -151,7 +152,7 @@ const deleteComment = async (commentId) => {
   if (!confirm(t('comments.confirmDelete'))) return;
 
   try {
-    await fetch(`http://localhost:3000/comments/${commentId}`, {
+    await fetch(`${API_BASE}/comments/${commentId}`, {
       method: 'DELETE',
     });
     fetchComments();

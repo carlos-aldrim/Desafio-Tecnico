@@ -1,12 +1,11 @@
 import http from "k6/http";
 import { check, sleep } from "k6";
+import { API_BASE } from "./config/api.js";
 
 export const options = {
   vus: 5,
   duration: "30s",
 };
-
-const BASE_URL = "http://localhost:3000";
 
 export default function () {
   const userPayload = JSON.stringify({
@@ -19,7 +18,7 @@ export default function () {
     headers: { "Content-Type": "application/json" },
   };
 
-  const userRes = http.post(`${BASE_URL}/users`, userPayload, jsonHeaders);
+  const userRes = http.post(`${API_BASE}/users`, userPayload, jsonHeaders);
   check(userRes, {
     "create user status is 201": (r) => r.status === 201,
   });
@@ -31,7 +30,7 @@ export default function () {
     password: "123456",
   });
 
-  const loginRes = http.post(`${BASE_URL}/login`, loginPayload, jsonHeaders);
+  const loginRes = http.post(`${API_BASE}/login`, loginPayload, jsonHeaders);
   check(loginRes, {
     "login status is 200": (r) => r.status === 200,
   });
@@ -49,7 +48,7 @@ export default function () {
   });
 
   const categoryRes = http.post(
-    `${BASE_URL}/categories`,
+    `${API_BASE}/categories`,
     categoryPayload,
     jsonHeaders
   );
@@ -67,7 +66,7 @@ export default function () {
     categoryId,
   });
 
-  const videoRes = http.post(`${BASE_URL}/videos`, videoPayload, jsonHeaders);
+  const videoRes = http.post(`${API_BASE}/videos`, videoPayload, jsonHeaders);
   check(videoRes, {
     "create video status is 200": (r) => r.status === 200,
   });
@@ -82,7 +81,7 @@ export default function () {
   });
 
   const commentRes = http.post(
-    `${BASE_URL}/comments`,
+    `${API_BASE}/comments`,
     commentPayload,
     jsonHeaders
   );
@@ -90,7 +89,7 @@ export default function () {
     "create comment status is 201": (r) => r.status === 201,
   });
 
-  const getAllCommentsRes = http.get(`${BASE_URL}/comments`);
+  const getAllCommentsRes = http.get(`${API_BASE}/comments`);
   check(getAllCommentsRes, {
     "get all comments status is 200": (r) => r.status === 200,
   });
@@ -98,27 +97,27 @@ export default function () {
   const comment = commentRes.json();
   const commentId = comment.id;
 
-  const listCommentsRes = http.get(`${BASE_URL}/videos/${videoId}/comments`);
+  const listCommentsRes = http.get(`${API_BASE}/videos/${videoId}/comments`);
   check(listCommentsRes, {
     "list comments by video status is 200": (r) => r.status === 200,
   });
 
-  const deleteCommentRes = http.del(`${BASE_URL}/comments/${commentId}`);
+  const deleteCommentRes = http.del(`${API_BASE}/comments/${commentId}`);
   check(deleteCommentRes, {
     "delete comment status is 204": (r) => r.status === 204,
   });
 
-  const deleteVideoRes = http.del(`${BASE_URL}/videos/${videoId}`);
+  const deleteVideoRes = http.del(`${API_BASE}/videos/${videoId}`);
   check(deleteVideoRes, {
     "delete video status is 200": (r) => r.status === 200,
   });
 
-  const deleteCategoryRes = http.del(`${BASE_URL}/categories/${categoryId}`);
+  const deleteCategoryRes = http.del(`${API_BASE}/categories/${categoryId}`);
   check(deleteCategoryRes, {
     "delete category status is 200": (r) => r.status === 200,
   });
 
-  const deleteUserRes = http.del(`${BASE_URL}/users/${user.id}`, null, {
+  const deleteUserRes = http.del(`${API_BASE}/users/${user.id}`, null, {
     headers: { Authorization: `Bearer ${token}` },
   });
   check(deleteUserRes, {

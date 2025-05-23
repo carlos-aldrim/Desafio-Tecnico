@@ -3,6 +3,8 @@ import fastifyJwt from "@fastify/jwt";
 import cors from "@fastify/cors";
 import { registerRoutes } from "./router/routes.js";
 import { metricsMiddleware } from './middlewares/metrics.js';
+import dotenv from "dotenv";
+dotenv.config();
 
 export async function buildApp(options = {}) {
   const app = Fastify({
@@ -38,7 +40,7 @@ export async function buildApp(options = {}) {
     methods: ["GET", "POST", "PUT", "DELETE"],
   });
 
-  await app.register(fastifyJwt, { secret: "your-secret-key" });
+  await app.register(fastifyJwt, { secret: process.env.JWT_SECRET });
 
   await app.register(await import("@fastify/swagger").then((m) => m.default), {
     routePrefix: "/docs",

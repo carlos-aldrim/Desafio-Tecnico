@@ -127,6 +127,7 @@ import NavBar from '../components/NavBar.vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth.js'
 import { useI18n } from 'vue-i18n'
+import { API_BASE } from '../config/api.js'
 
 const { t } = useI18n()
 
@@ -160,7 +161,7 @@ async function saveCategory(id) {
   }
 
   try {
-    const response = await fetch(`http://localhost:3000/categories/${id}`, {
+    const response = await fetch(`${API_BASE}/categories/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: editedName.value.trim() }),
@@ -189,7 +190,7 @@ async function saveNewCategory() {
   }
 
   try {
-    const response = await fetch(`http://localhost:3000/categories`, {
+    const response = await fetch(`${API_BASE}/categories`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: newCategoryName.value.trim() }),
@@ -218,7 +219,7 @@ function cancelNewCategory() {
 const fetchCategories = async () => {
   error.value = false
   try {
-    const res = await fetch('http://localhost:3000/categories')
+    const res = await fetch(`${API_BASE}/categories`)
     if (!res.ok) throw new Error(t('categories.apiResponseError'))
 
     const data = await res.json()
@@ -233,7 +234,7 @@ const deleteCategory = async (id) => {
   if (!confirm(t('categories.confirmDelete'))) return
 
   try {
-    const response = await fetch(`http://localhost:3000/categories/${id}`, {
+    const response = await fetch(`${API_BASE}/categories/${id}`, {
       method: 'DELETE',
     })
 

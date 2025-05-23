@@ -88,6 +88,7 @@ import { ref, onMounted, computed } from 'vue'
 import NavBar from '../components/NavBar.vue'
 import { useAuthStore } from '../stores/auth.js'
 import { useI18n } from 'vue-i18n'
+import { API_BASE } from '../config/api.js'
 
 const { t } = useI18n()
 
@@ -98,7 +99,7 @@ const auth = useAuthStore()
 
 const fetchVideos = async () => {
   try {
-    const response = await fetch('http://localhost:3000/videos')
+    const response = await fetch(`${API_BASE}/videos`)
     if (!response.ok) throw new Error(t('videos.fetchError'))
 
     const data = await response.json()
@@ -112,7 +113,7 @@ const deleteVideo = async (id) => {
   if (!confirm(t('videos.confirmDelete'))) return
 
   try {
-    const response = await fetch(`http://localhost:3000/videos/${id}`, {
+    const response = await fetch(`${API_BASE}/videos/${id}`, {
       method: 'DELETE',
     })
 

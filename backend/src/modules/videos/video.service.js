@@ -26,7 +26,7 @@ export async function createVideo({ title, description, url, categoryId }) {
       title,
       description,
       url,
-      categoryId,
+      categoryId: Number(categoryId),
     },
   });
 }
@@ -38,7 +38,7 @@ export async function updateVideo(id, { title, description, url, categoryId }) {
       title,
       description,
       url,
-      categoryId,
+      categoryId: Number(categoryId),
     },
   });
 }

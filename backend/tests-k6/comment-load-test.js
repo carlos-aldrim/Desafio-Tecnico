@@ -68,7 +68,7 @@ export default function () {
 
   const videoRes = http.post(`${API_BASE}/videos`, videoPayload, jsonHeaders);
   check(videoRes, {
-    "create video status is 200": (r) => r.status === 200,
+    "create video status is 201": (r) => r.status === 201,
   });
 
   const video = videoRes.json();

@@ -7,57 +7,23 @@
       </h2>
 
       <div class="grid gap-4 w-full max-w-4xl">
-        <div
+        <CategoryVideoCard
           v-for="video in paginatedVideos"
           :key="video.id"
-          @click="$router.push(`/videos/${video.id}`)"
-          class="video-card bg-white bg-opacity-90 rounded-xl shadow-md p-4 hover:shadow-lg transition-shadow duration-200 cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-3"
-        >
-          <div class="flex flex-col sm:flex-row sm:items-center sm:gap-6 flex-1">
-            <h3 class="text-lg sm:text-xl font-semibold text-indigo-900 truncate">
-              {{ video.title }}
-            </h3>
-            <p class="text-gray-700 text-sm line-clamp-2 sm:line-clamp-1 max-w-xs sm:max-w-md">
-              {{ video.description }}
-            </p>
-          </div>
-          <div class="flex items-center gap-4 flex-wrap sm:flex-nowrap">
-            <span
-              class="inline-block bg-indigo-100 text-indigo-700 text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap select-none"
-            >
-              {{ $t('category.label') }}: {{ categoryName }}
-            </span>
-            <a
-              :href="video.url"
-              target="_blank"
-              class="text-indigo-600 font-semibold underline text-sm hover:text-indigo-800"
-            >
-              {{ $t('category.watch') }}
-            </a>
-          </div>
-        </div>
-
+          :video="video"
+          :categoryName="categoryName"
+        />
         <p v-if="paginatedVideos.length === 0" class="text-white text-center mt-4">
           {{ $t('category.none') }}
         </p>
       </div>
 
-      <div class="mt-8 flex space-x-6">
-        <button
-          :disabled="currentPage === 1"
-          @click="currentPage--"
-          class="px-5 py-2 rounded-lg bg-white text-indigo-700 font-semibold shadow-md hover:bg-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
-        >
-          ‹ {{ $t('pagination.prev') }}
-        </button>
-        <button
-          :disabled="currentPage >= totalPages"
-          @click="currentPage++"
-          class="px-5 py-2 rounded-lg bg-white text-indigo-700 font-semibold shadow-md hover:bg-indigo-100 disabled:opacity-50 disabled:cursor-not-allowed transition"
-        >
-          {{ $t('pagination.next') }} ›
-        </button>
-      </div>
+      <PaginationControls
+        :currentPage="currentPage"
+        :totalPages="totalPages"
+        @prev="currentPage > 1 ? currentPage-- : null"
+        @next="currentPage < totalPages ? currentPage++ : null"
+      />
     </div>
   </div>
 </template>
@@ -66,6 +32,8 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import NavBar from '../components/NavBar.vue'
+import CategoryVideoCard from '../components/CategoryVideoCard.vue'
+import PaginationControls from '../components/PaginationControls.vue'
 import { API_BASE } from '../config/api.js'
 
 const route = useRoute()
@@ -134,8 +102,5 @@ h2 {
     opacity: 1;
     transform: translateY(0);
   }
-}
-.video-card {
-  animation: fadeSlideUp 0.5s ease forwards;
 }
 </style>

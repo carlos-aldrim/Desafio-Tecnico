@@ -14,12 +14,11 @@ export async function getCommentsByVideoId(videoId) {
 }
 
 export async function createComment({ userId, videoId, message }) {
-  return prisma.comment.create({
+  return await prisma.comment.create({
     data: {
-      userId,
-      videoId,
+      userId: Number(userId),
+      videoId: Number(videoId),
       message,
-      timestamp: new Date(),
     },
   });
 }

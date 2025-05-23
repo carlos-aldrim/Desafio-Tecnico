@@ -6,10 +6,10 @@
       </h2>
 
       <form @submit.prevent="handleSubmit" class="space-y-4">
-        <BaseInput v-model="title" type="text" :placeholder="t('videoEdit.title')" />
-        <BaseInput v-model="description" type="text" :placeholder="t('videoEdit.description')" />
-        <BaseInput v-model="url" type="text" :placeholder="t('videoEdit.url')" />
-        <select v-model="categoryId" class="input">
+        <BaseInput required v-model="title" type="text" :placeholder="t('videoEdit.title')" />
+        <BaseInput required v-model="description" type="text" :placeholder="t('videoEdit.description')" />
+        <BaseInput required v-model="url" type="text" :placeholder="t('videoEdit.url')" />
+        <select required v-model="categoryId" class="input">
           <option disabled value="">{{ t('videoEdit.selectCategory') }}</option>
           <option v-for="category in categories" :key="category.id" :value="category.id">
             {{ category.name }}

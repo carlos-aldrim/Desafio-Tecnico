@@ -50,6 +50,14 @@ export async function buildApp(options = {}) {
     exposeRoute: true,
   });
 
+  await app.register(await import('@fastify/swagger-ui').then(m => m.default), {
+    routePrefix: '/docs/ui',
+    uiConfig: {
+      docExpansion: 'full',
+      deepLinking: false
+    }
+  });  
+
   app.addHook("onRequest", (req, reply, done) => {
     app.log.info({ method: req.method, url: req.url }, "New request");
     done();

@@ -73,6 +73,12 @@ onMounted(async () => {
 })
 
 async function handleSubmit() {
+  console.log(JSON.stringify({
+      title: title.value,
+      description: description.value,
+      url: url.value,
+      categoryId: categoryId.value
+    }));
   const res = await fetch(`${API_BASE}/videos`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -80,7 +86,7 @@ async function handleSubmit() {
       title: title.value,
       description: description.value,
       url: url.value,
-      categoryId: Number(categoryId.value)
+      categoryId: categoryId.value
     }),
   })
 

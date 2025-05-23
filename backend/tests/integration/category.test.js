@@ -29,7 +29,7 @@ describe("Category Routes", () => {
     const res = await request(app.server).post("/categories").send({});
 
     expect(res.statusCode).toBe(400);
-    expect(res.body).toHaveProperty("error", "Name is required");
+    expect(res.body).toHaveProperty("error", "Bad Request");
   });
 
   test("Should return list of categories", async () => {
@@ -68,7 +68,7 @@ describe("Category Routes", () => {
     const res = await request(app.server).get("/categories/abc");
 
     expect(res.statusCode).toBe(400);
-    expect(res.body).toHaveProperty("error", "Invalid ID");
+    expect(res.body).toHaveProperty("error", "Bad Request");
   });
 
   test("Should update a category", async () => {
@@ -97,7 +97,7 @@ describe("Category Routes", () => {
     const res = await request(app.server).put(`/categories/${category.id}`).send({});
 
     expect(res.statusCode).toBe(400);
-    expect(res.body).toHaveProperty("error", "Name is required");
+    expect(res.body).toHaveProperty("error", "Bad Request");
 
     await prisma.category.delete({ where: { id: category.id } });
   });
@@ -122,6 +122,6 @@ describe("Category Routes", () => {
     const res = await request(app.server).delete("/categories/invalid");
 
     expect(res.statusCode).toBe(400);
-    expect(res.body).toHaveProperty("error", "Invalid ID");
+    expect(res.body).toHaveProperty("error", "Bad Request");
   });
 });

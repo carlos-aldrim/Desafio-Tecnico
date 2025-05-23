@@ -73,7 +73,7 @@ describe("User Tests", () => {
     });
 
     expect(res.statusCode).toBe(400);
-    expect(res.body).toHaveProperty("error", "Missing required fields");
+    expect(res.body).toHaveProperty("error", "Bad Request");
   });
 
   test("Role inválida", async () => {

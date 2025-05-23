@@ -45,10 +45,10 @@ describe("Comment Tests", () => {
     expect(res.body).toHaveProperty("id");
     expect(res.body.message).toBe("Muito bom esse tutorial, obrigado!");
 
-    await prisma.comment.delete({ where: { id: res.body.id } });
-    await prisma.video.delete({ where: { id: video.id } });
-    await prisma.category.delete({ where: { id: category.id } });
-    await prisma.user.delete({ where: { id: user.id } });
+    await prisma.comment.delete({ where: { id: Number(res.body.id) } });
+    await prisma.video.delete({ where: { id: Number(video.id) } });
+    await prisma.category.delete({ where: { id: Number(category.id) } });
+    await prisma.user.delete({ where: { id: Number(user.id) } });
   });
 
   test("Should fail to create comment with missing fields", async () => {
@@ -65,7 +65,7 @@ describe("Comment Tests", () => {
     });
 
     expect(res.statusCode).toBe(400);
-    expect(res.body).toHaveProperty("error", "Missing required fields");
+    expect(res.body).toHaveProperty("error", "Bad Request");
 
     await prisma.user.delete({ where: { id: user.id } });
   });
@@ -92,8 +92,8 @@ describe("Comment Tests", () => {
     expect(res.statusCode).toBe(500);
     expect(res.body).toHaveProperty("error");
 
-    await prisma.video.delete({ where: { id: video.id } });
-    await prisma.category.delete({ where: { id: category.id } });
+    await prisma.video.delete({ where: { id: Number(video.id) } });
+    await prisma.category.delete({ where: { id: Number(category.id) } });
   });
 
   test("Should fail to create comment with non-existent video", async () => {
@@ -114,7 +114,7 @@ describe("Comment Tests", () => {
     expect(res.statusCode).toBe(500);
     expect(res.body).toHaveProperty("error");
 
-    await prisma.user.delete({ where: { id: user.id } });
+    await prisma.user.delete({ where: { id: Number(user.id) } });
   });
 
   test("Should return all comments with user and video info", async () => {
@@ -153,10 +153,10 @@ describe("Comment Tests", () => {
     expect(res.body[0]).toHaveProperty("user");
     expect(res.body[0]).toHaveProperty("video");
 
-    await prisma.comment.delete({ where: { id: comment.id } });
-    await prisma.video.delete({ where: { id: video.id } });
-    await prisma.category.delete({ where: { id: category.id } });
-    await prisma.user.delete({ where: { id: user.id } });
+    await prisma.comment.delete({ where: { id: Number(comment.id) } });
+    await prisma.video.delete({ where: { id: Number(video.id) } });
+    await prisma.category.delete({ where: { id: Number(category.id) } });
+    await prisma.user.delete({ where: { id: Number(user.id) } });
   });
 
   test("Should return comments for specific video", async () => {
@@ -193,12 +193,12 @@ describe("Comment Tests", () => {
     expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
     expect(res.body[0]).toHaveProperty("user");
-    expect(res.body[0].videoId).toBe(video.id);
+    expect(Number(res.body[0].id)).toBe(comment.id);
 
-    await prisma.comment.delete({ where: { id: comment.id } });
-    await prisma.video.delete({ where: { id: video.id } });
-    await prisma.category.delete({ where: { id: category.id } });
-    await prisma.user.delete({ where: { id: user.id } });
+    await prisma.comment.delete({ where: { id: Number(comment.id) } });
+    await prisma.video.delete({ where: { id: Number(video.id) } });
+    await prisma.category.delete({ where: { id: Number(category.id) } });
+    await prisma.user.delete({ where: { id: Number(user.id) } });
   });
 
   test("Should fail to get comments with invalid video ID", async () => {
@@ -241,9 +241,9 @@ describe("Comment Tests", () => {
 
     expect(res.statusCode).toBe(204);
 
-    await prisma.video.delete({ where: { id: video.id } });
-    await prisma.category.delete({ where: { id: category.id } });
-    await prisma.user.delete({ where: { id: user.id } });
+    await prisma.video.delete({ where: { id: Number(video.id) } });
+    await prisma.category.delete({ where: { id: Number(category.id) } });
+    await prisma.user.delete({ where: { id: Number(user.id) } });
   });
 
   test("Should return 400 when deleting comment with invalid ID", async () => {

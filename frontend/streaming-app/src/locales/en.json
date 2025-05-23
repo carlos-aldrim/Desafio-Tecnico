@@ -73,7 +73,7 @@
   "login": {
     "title": "Login",
     "emailLabel": "Email",
-    "emailPlaceholder": "your.email@example.com",
+    "emailPlaceholder": "your.email",
     "passwordLabel": "Password",
     "passwordPlaceholder": "••••••••",
     "button": "Login",
@@ -114,7 +114,9 @@
     "apiResponseError": "API response error.",
     "nameRequired": "Category name is required.",
     "updateError": "Error updating category.",
-    "createError": "Error creating category."
+    "createError": "Error creating category.",
+    "save": "Save",
+    "cancel": "Cancel"
   },
   "adminEditUser": {
     "title": "Edit User",

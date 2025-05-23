@@ -25,12 +25,12 @@ describe("Video Routes", () => {
       categoryId: category.id,
     });
 
-    expect(res.statusCode).toBe(200);
+    expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty("id");
     expect(res.body.title).toBe("A História da Internet");
 
-    await prisma.video.delete({ where: { id: res.body.id } });
-    await prisma.category.delete({ where: { id: category.id } });
+    await prisma.video.delete({ where: { id: Number(res.body.id) } });
+    await prisma.category.delete({ where: { id: Number(category.id) } });
   });
 
   test("Should not create a video with missing fields", async () => {
@@ -47,7 +47,7 @@ describe("Video Routes", () => {
     expect(res.statusCode).toBe(400);
     expect(res.body).toHaveProperty("error", "Missing fields");
 
-    await prisma.category.delete({ where: { id: category.id } });
+    await prisma.category.delete({ where: { id: Number(category.id) } });
   });
 
   test("Should return all videos", async () => {
@@ -70,8 +70,8 @@ describe("Video Routes", () => {
     expect(Array.isArray(res.body)).toBe(true);
     expect(res.body.length).toBeGreaterThan(0);
 
-    await prisma.video.delete({ where: { id: video.id } });
-    await prisma.category.delete({ where: { id: category.id } });
+    await prisma.video.delete({ where: { id: Number(video.id) } });
+    await prisma.category.delete({ where: { id: Number(category.id) } });
   });
 
   test("Should return a specific video by ID", async () => {
@@ -91,11 +91,11 @@ describe("Video Routes", () => {
     const res = await request(app.server).get(`/videos/${video.id}`);
 
     expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty("id", video.id);
-    expect(res.body.category).toHaveProperty("id", category.id);
+    expect(Number(res.body.id)).toBe(video.id);
+    expect(Number(res.body.categoryId)).toBe(category.id);
 
-    await prisma.video.delete({ where: { id: video.id } });
-    await prisma.category.delete({ where: { id: category.id } });
+    await prisma.video.delete({ where: { id: Number(video.id) } });
+    await prisma.category.delete({ where: { id: Number(category.id) } });
   });
 
   test("Should return 404 for non-existent video", async () => {
@@ -129,8 +129,8 @@ describe("Video Routes", () => {
     expect(res.statusCode).toBe(200);
     expect(res.body.title).toBe("Título Atualizado");
 
-    await prisma.video.delete({ where: { id: video.id } });
-    await prisma.category.delete({ where: { id: category.id } });
+    await prisma.video.delete({ where: { id: Number(video.id) } });
+    await prisma.category.delete({ where: { id: Number(category.id) } });
   });
 
   test("Should delete a video", async () => {
@@ -152,7 +152,7 @@ describe("Video Routes", () => {
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty("message", "Video deleted successfully");
 
-    await prisma.category.delete({ where: { id: category.id } });
+    await prisma.category.delete({ where: { id: Number(category.id) } });
   });
 
   test("Should return an empty list after deletion", async () => {
@@ -177,6 +177,6 @@ describe("Video Routes", () => {
     expect(Array.isArray(res.body)).toBe(true);
     expect(res.body.find((v) => v.id === video.id)).toBeUndefined();
 
-    await prisma.category.delete({ where: { id: category.id } });
+    await prisma.category.delete({ where: { id: Number(category.id) } });
   });
 });

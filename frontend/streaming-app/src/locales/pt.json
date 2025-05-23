@@ -73,7 +73,7 @@
   "login": {
     "title": "Login",
     "emailLabel": "Email",
-    "emailPlaceholder": "seu.email@exemplo.com",
+    "emailPlaceholder": "seu.email",
     "passwordLabel": "Senha",
     "passwordPlaceholder": "••••••••",
     "button": "Entrar",
@@ -114,7 +114,9 @@
     "apiResponseError": "Erro na resposta da API.",
     "nameRequired": "O nome da categoria é obrigatório.",
     "updateError": "Erro ao atualizar a categoria.",
-    "createError": "Erro ao criar a categoria."
+    "createError": "Erro ao criar a categoria.",
+    "save": "Salvar",
+    "cancel": "Cancelar"
   },
   "adminEditUser": {
     "title": "Editar Usuário",

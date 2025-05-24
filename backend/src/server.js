@@ -30,11 +30,11 @@ async function start() {
 
   await createDefaultAdmin();
 
-  await app.listen({ port: 3000 });
-  console.log("🚀 Server running at http://localhost:3000");
+  const PORT = process.env.PORT || 3000;
+  await app.listen({ port: PORT, host: '0.0.0.0' });
+  console.log(`🚀 Server running at http://0.0.0.0:${PORT}`);
 
   process.on('SIGTERM', async () => {
-    await shutdownTracing();
     process.exit(0);
   });
 }

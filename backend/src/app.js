@@ -36,7 +36,7 @@ export async function buildApp(options = {}) {
   });
 
   await app.register(cors, {
-    origin: "http://localhost:5173",
+    origin: true,
     methods: ["GET", "POST", "PUT", "DELETE"],
   });
 

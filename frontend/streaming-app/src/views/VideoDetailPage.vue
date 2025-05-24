@@ -84,13 +84,13 @@ const video = ref(null)
 const comments = ref([])
 const newComment = ref('')
 const currentPage = ref(1)
-const pageSize = 5
+const pageSize = 4
 
 const fetchVideo = async () => {
   try {
-    const res = await fetch(`${API_BASE}/videos`)
+    const res = await fetch(`${API_BASE}/videos/${videoId}`)
     const data = await res.json()
-    video.value = data.find(v => v.id === Number(videoId))
+    video.value = data
   } catch (err) {
     console.error('Erro ao carregar vídeo:', err)
   }

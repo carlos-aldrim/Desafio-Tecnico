@@ -1,73 +1,29 @@
 <template>
-  <nav class="flex justify-between items-center bg-white px-6 py-4 shadow">
-    <h1 class="text-xl font-bold text-gray-700">Streaming App</h1>
+  <nav class="bg-white px-6 py-4 shadow">
+    <div class="flex justify-between items-center">
+      <h1 class="text-xl font-bold text-gray-700">Streaming App</h1>
 
-    <div class="flex items-center space-x-4">
-      <button
-        @click="router.push('/')"
-        class="text-indigo-500 font-medium hover:text-indigo-600 underline"
-      >
-        {{ $t('navbar.home') }}
+      <button @click="menuOpen = !menuOpen" class="md:hidden text-gray-700 focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
       </button>
 
-      <button
-        @click="router.push('/videos')"
-        class="text-indigo-500 font-medium hover:text-indigo-600 underline"
-      >
-        {{ $t('navbar.videos') }}
-      </button>
+      <div class="hidden md:flex items-center space-x-4">
+        <NavbarLinks />
+      </div>
+    </div>
 
-      <button
-        @click="router.push('/categorias')"
-        class="text-indigo-500 font-medium hover:text-indigo-600 underline"
-      >
-        {{ $t('navbar.categories') }}
-      </button>
-
-      <button
-        @click="router.push('/usuario')"
-        class="text-indigo-500 font-medium hover:text-indigo-600 underline"
-      >
-        {{ $t('navbar.user') }}
-      </button>
-
-      <button
-        v-if="auth.user?.role === 'admin'"
-        @click="router.push('/admin')"
-        class="text-indigo-500 font-medium hover:text-indigo-600 underline"
-      >
-        {{ $t('navbar.admin') }}
-      </button>
-
-      <button @click="toggleLanguage" class="ml-2">
-        <img
-          v-if="locale === 'pt'"
-          src="https://flagcdn.com/w40/br.png"
-          alt="Português"
-          class="w-6 h-6 rounded shadow"
-        />
-        <img
-          v-else
-          src="https://flagcdn.com/w40/us.png"
-          alt="English"
-          class="w-6 h-6 rounded shadow"
-        />
-      </button>
+    <div v-if="menuOpen" class="md:hidden mt-4 flex flex-col space-y-2">
+      <NavbarLinks />
     </div>
   </nav>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '../stores/auth.js'
-import { useI18n } from 'vue-i18n'
+import { ref } from 'vue'
+import NavbarLinks from './NavbarLinks.vue'
 
-const router = useRouter()
-const auth = useAuthStore()
-
-const { locale } = useI18n()
-
-function toggleLanguage() {
-  locale.value = locale.value === 'pt' ? 'en' : 'pt'
-}
+const menuOpen = ref(false)
 </script>

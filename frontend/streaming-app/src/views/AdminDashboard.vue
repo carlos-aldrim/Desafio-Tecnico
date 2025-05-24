@@ -3,7 +3,7 @@
     <NavBar />
 
     <div class="flex flex-col items-center py-10 px-4">
-      <h2 class="text-4xl text-right font-extrabold text-white mb-6 drop-shadow-lg">
+      <h2 class="text-4xl text-left font-extrabold text-white mb-6 drop-shadow-lg">
         {{ t('adminPanel.title') }}
       </h2>
 

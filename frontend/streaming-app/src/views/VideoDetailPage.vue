@@ -3,8 +3,12 @@
     <NavBar />
 
     <div class="max-w-4xl mx-auto py-10 px-4 text-white">
-      <h2 class="text-3xl font-bold mb-4">{{ video?.title }}</h2>
-      <p class="mb-6">{{ video?.description }}</p>
+      <h2 class="text-3xl font-bold mb-4 break-words whitespace-normal w-full">
+        {{ video?.title }}
+      </h2>
+      <p class="mb-6 break-words whitespace-normal w-full">
+        Descrição: {{ video?.description }}
+      </p>
 
       <div class="bg-white bg-opacity-90 rounded-xl p-6 shadow-md max-h-[500px]">
         <h3 class="text-xl font-bold text-indigo-800 mb-4">{{ $t('comments.title') }}</h3>
